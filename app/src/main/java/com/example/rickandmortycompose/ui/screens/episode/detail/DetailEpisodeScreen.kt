@@ -1,4 +1,4 @@
-package com.example.rickandmortycompose.ui.screens.character.detail
+package com.example.rickandmortycompose.ui.screens.episode.detail
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,44 +13,40 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
 import kotlinx.coroutines.Dispatchers
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun DetailCharacterScreen(
-    viewModel: DetailCharacterViewModel = koinViewModel(),
+fun DetailEpisodeScreen(
+    viewModel: DetailEpisodeViewModel = koinViewModel(),
     id: Int
 ) {
-    val character by viewModel.singleCharacterStateFlow.collectAsState()
+    val episode by viewModel.singleEpisodeStateFlow.collectAsState()
     LaunchedEffect(Dispatchers.IO) {
-        viewModel.getSingleCharacter(id)
+        viewModel.getSingleEpisode(id)
     }
-    character?.let {
-        SingleCharacter(
-            gender = it.gender,
-            name = it.name,
-            image = it.image,
-            status = it.status,
-            species = it.species,
-            location = it.location.name
+    episode?.let {
+        SingleEpisode(
+            episode = it.episode,
+            airDate = it.airDate,
+            url = it.url,
+            name = it.name
         )
     }
+
 }
 
+
 @Composable
-fun SingleCharacter(
-    gender: String,
+fun SingleEpisode(
+    episode: String,
     name: String,
-    species: String,
-    image: String,
-    status: String,
-    location: String
+    airDate: String,
+    url: String,
 ) {
     Column(
         modifier = Modifier
@@ -59,12 +55,10 @@ fun SingleCharacter(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        AsyncImage(
-            modifier = Modifier
-                .size(200.dp)
-                .padding(4.dp),
-            model = image,
-            contentDescription = "image of character"
+        Text(
+            modifier = Modifier,
+            text = episode,
+            fontSize = 24.sp,
         )
         Text(
             modifier = Modifier.padding(top = 12.dp, bottom = 2.dp),
@@ -73,30 +67,18 @@ fun SingleCharacter(
             fontWeight = FontWeight.Bold
         )
         Text(
-            text = species,
+            text = airDate,
             fontSize = 20.sp,
             fontWeight = FontWeight.SemiBold
         )
-        Text(
-            modifier = Modifier.padding(8.dp),
-            text = gender,
-            color = if (gender == "Female") Color.Red else Color.Blue,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.SemiBold
-        )
-        Text(
-            text = "Status: $status",
-            fontSize = 16.sp,
-            fontWeight = FontWeight.W400
-        )
-        Spacer(Modifier.size(8.dp))
+
+        Spacer(Modifier.size(16.dp))
         Text(
             modifier = Modifier
                 .padding(horizontal = 16.dp),
-            text = "Location: $location",
+            text = url,
             fontSize = 16.sp,
             fontStyle = FontStyle.Italic
         )
     }
 }
-

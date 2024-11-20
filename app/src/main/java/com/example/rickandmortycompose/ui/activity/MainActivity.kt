@@ -31,6 +31,7 @@ import com.example.rickandmortycompose.ui.screens.character.CharacterScreen
 import com.example.rickandmortycompose.ui.screens.episode.EpisodeScreen
 import com.example.rickandmortycompose.ui.screens.Screens
 import com.example.rickandmortycompose.ui.screens.character.detail.DetailCharacterScreen
+import com.example.rickandmortycompose.ui.screens.episode.detail.DetailEpisodeScreen
 import com.example.rickandmortycompose.ui.theme.RickAndMortyComposeTheme
 
 class MainActivity : ComponentActivity() {
@@ -64,6 +65,11 @@ class MainActivity : ComponentActivity() {
                         navController.navigate("DetailCharacterScreen/$characterId")
                     })
                 }
+                composable(Screens.EpisodeScreen.route) {
+                    EpisodeScreen(toDetailEpisodeScreen = { episodeId ->
+                        navController.navigate("DetailEpisodeScreen/$episodeId")
+                    })
+                }
                 composable(
                     route = Screens.DetailCharacterScreen.route,
                     arguments = listOf(navArgument(name = "characterId") { type = NavType.IntType })
@@ -71,8 +77,12 @@ class MainActivity : ComponentActivity() {
                     val characterId = backStackEntry.arguments?.getInt("characterId") ?: 0
                     DetailCharacterScreen(id = characterId)
                 }
-                composable(Screens.EpisodeScreen.route) {
-                    EpisodeScreen()
+                composable(
+                    route = Screens.DetailEpisodeScreen.route,
+                    arguments = listOf(navArgument(name = "episodeId") { type = NavType.IntType })
+                ) { backStackEntry ->
+                    val episodeId = backStackEntry.arguments?.getInt("episodeId") ?: 0
+                    DetailEpisodeScreen(id = episodeId)
                 }
             }
         }

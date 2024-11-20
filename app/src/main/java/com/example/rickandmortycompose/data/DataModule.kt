@@ -2,7 +2,9 @@ package com.example.rickandmortycompose.data
 
 import com.example.rickandmortycompose.BuildConfig.BASE_URL
 import com.example.rickandmortycompose.data.network.api.CharacterApiService
+import com.example.rickandmortycompose.data.network.api.EpisodeApiService
 import com.example.rickandmortycompose.data.repository.CharacterRepository
+import com.example.rickandmortycompose.data.repository.EpisodeRepository
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.module.Module
@@ -19,7 +21,11 @@ val dataModule: Module = module {
 
     single { get<Retrofit>().create(CharacterApiService::class.java) }
 
+    single { get<Retrofit>().create(EpisodeApiService::class.java) }
+
     single { CharacterRepository(get()) }
+
+    single { EpisodeRepository(get()) }
 }
 
 fun provideOkhttpClient(): OkHttpClient {

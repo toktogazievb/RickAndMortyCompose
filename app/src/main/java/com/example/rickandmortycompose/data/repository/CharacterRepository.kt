@@ -27,7 +27,6 @@ class CharacterRepository(
             val response = characterApiService.getSingleCharacter(id)
 
             if (response.isSuccessful) {
-                Log.e("dadadada","DDDDD${response.body()}")
                 val character = response.body()
                 return character
             } else {
