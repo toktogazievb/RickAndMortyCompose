@@ -1,4 +1,4 @@
-package com.example.rickandmortycompose.ui.screens
+package com.example.rickandmortycompose.ui.screens.episode
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn

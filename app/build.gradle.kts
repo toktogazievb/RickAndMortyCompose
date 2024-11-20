@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("org.jetbrains.kotlin.plugin.compose")
+    kotlin("plugin.serialization") version "2.0.0"
 }
 
 android {
@@ -21,7 +22,14 @@ android {
         }
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     buildTypes {
+        debug {
+            buildConfigField("String", "BASE_URL", "\"https://rickandmortyapi.com/api/\"")
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -54,6 +62,22 @@ dependencies {
 
     //Nav component https://developer.android.com/develop/ui/compose/navigation?hl=ru
     implementation(libs.androidx.navigation.compose)
+
+    //Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
+    //Koin
+    implementation(libs.koin.androidx.compose)
+
+    //Serialization
+    implementation(libs.kotlinx.serialization.json)
+
+    //OkhttpInterceptor
+    implementation(libs.logging.interceptor)
+
+    //Images from URL
+    implementation (libs.coil.compose)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
