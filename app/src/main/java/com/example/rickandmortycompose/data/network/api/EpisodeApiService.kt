@@ -1,5 +1,7 @@
 package com.example.rickandmortycompose.data.network.api
 
+import com.example.rickandmortycompose.data.model.CharacterResponse
+import com.example.rickandmortycompose.data.model.CharacterResultsResponse
 import com.example.rickandmortycompose.data.model.EpisodeResponse
 import com.example.rickandmortycompose.data.model.EpisodeResultResponse
 import retrofit2.Response
@@ -13,4 +15,7 @@ interface EpisodeApiService {
 
     @GET("episode/{id}")
     suspend fun getSingleEpisode(@Path("id") id: Int): Response<EpisodeResponse>
+
+    @GET("character/{id}")
+    suspend fun getEpisodeCharacters(@Path("id") id: Int): Response<CharacterResponse>
 }
