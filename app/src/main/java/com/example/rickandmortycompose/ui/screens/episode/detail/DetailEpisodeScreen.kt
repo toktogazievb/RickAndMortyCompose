@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.rickandmortycompose.R
@@ -47,7 +48,7 @@ fun DetailEpisodeScreen(
     LaunchedEffect(Dispatchers.IO) {
         viewModel.getSingleEpisode(episodeId)
     }
-    Log.e("ololo", "DetailEpisodeScreen: $characters", )
+    Log.e("ololo", "DetailEpisodeScreen: $characters")
 
     if (episode == null) {
         CustomLinearProgressBar()
@@ -84,7 +85,6 @@ fun SingleEpisode(
                 color = colorResource(R.color.purple_700_semi_visible),
                 shape = RoundedCornerShape(12.dp)
             ),
-        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.size(20.dp))
@@ -97,6 +97,7 @@ fun SingleEpisode(
         Text(
             modifier = Modifier.padding(top = 12.dp, bottom = 2.dp),
             text = name,
+            textAlign = TextAlign.Center,
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
             color = Color.White
@@ -124,18 +125,22 @@ fun SingleEpisode(
             color = Color.White,
             modifier = Modifier.padding(horizontal = 16.dp)
         )
-        LazyColumn {
-            items(characters) { character ->
-                CharacterItem(
-                    photo = character.image,
-                    name = character.name,
-                    gender = character.gender,
-                    location = character.location.name,
-                    onItemClick = {
-                        toDetailCharacterScreen(character.id)
-                    }
+        if (characters.isEmpty()) {
+            CustomLinearProgressBar()
+        } else {
+            LazyColumn {
+                items(characters) { character ->
+                    CharacterItem(
+                        photo = character.image,
+                        name = character.name,
+                        gender = character.gender,
+                        location = character.location.name,
+                        onItemClick = {
+                            toDetailCharacterScreen(character.id)
+                        }
 
-                )
+                    )
+                }
             }
         }
     }
