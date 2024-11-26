@@ -1,6 +1,7 @@
-package com.example.rickandmortycompose.data.repository
+package com.example.rickandmortycompose.data.repository.character
 
-import android.util.Log
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import com.example.rickandmortycompose.data.model.CharacterResponse
 import com.example.rickandmortycompose.data.network.api.CharacterApiService
 
@@ -8,18 +9,15 @@ class CharacterRepository(
     private val characterApiService: CharacterApiService
 ) {
 
-    suspend fun getAllCharacter(): List<CharacterResponse>? {
-        return try {
-            val response = characterApiService.getAllCharacters()
-
-            if (response.isSuccessful) {
-                return response.body()?.characterResponse
-            } else {
-                null
+    fun getAllCharacter(): Pager<Int, CharacterResponse> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20
+            ),
+            pagingSourceFactory = {
+                CharacterPagingSource(characterApiService)
             }
-        } catch (e: Exception) {
-            null
-        }
+        )
     }
 
     suspend fun getSingleCharacter(id: Int): CharacterResponse? {
