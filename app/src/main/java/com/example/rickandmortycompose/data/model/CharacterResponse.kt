@@ -3,8 +3,10 @@ package com.example.rickandmortycompose.data.model
 import com.google.gson.annotations.SerializedName
 
 data class CharacterResultsResponse(
+    @SerializedName("info")
+    val pageInfo: PageInfo?,
     @SerializedName("results")
-    val characterResponse: List<CharacterResponse>
+    val characterResponse: List<CharacterResponse>?
 )
 
 data class CharacterResponse(

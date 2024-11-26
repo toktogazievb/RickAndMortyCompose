@@ -3,8 +3,8 @@ package com.example.rickandmortycompose.data
 import com.example.rickandmortycompose.BuildConfig.BASE_URL
 import com.example.rickandmortycompose.data.network.api.CharacterApiService
 import com.example.rickandmortycompose.data.network.api.EpisodeApiService
-import com.example.rickandmortycompose.data.repository.CharacterRepository
-import com.example.rickandmortycompose.data.repository.EpisodeRepository
+import com.example.rickandmortycompose.data.repository.character.CharacterRepository
+import com.example.rickandmortycompose.data.repository.episode.EpisodeRepository
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.module.Module

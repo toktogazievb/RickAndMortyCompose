@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
@@ -25,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -184,4 +186,13 @@ fun CustomLinearProgressBar() {
             trackColor = colorResource(R.color.teal_700)
         )
     }
+}
+
+@Composable
+fun CustomCircularProgressBar() {
+    CircularProgressIndicator(
+        modifier = Modifier.width(40.dp),
+        color = colorResource(R.color.teal_200),
+        trackColor = colorResource(R.color.teal_700)
+    )
 }

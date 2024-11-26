@@ -79,6 +79,10 @@ dependencies {
     //Images from URL
     implementation (libs.coil.compose)
 
+    //Paging 3 https://developer.android.com/topic/libraries/architecture/paging/v3-overview?hl=ru
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.paging.compose)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

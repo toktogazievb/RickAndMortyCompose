@@ -3,7 +3,7 @@ package com.example.rickandmortycompose.ui.screens.episode.detail
 import androidx.lifecycle.ViewModel
 import com.example.rickandmortycompose.data.model.CharacterResponse
 import com.example.rickandmortycompose.data.model.EpisodeResponse
-import com.example.rickandmortycompose.data.repository.EpisodeRepository
+import com.example.rickandmortycompose.data.repository.episode.EpisodeRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 

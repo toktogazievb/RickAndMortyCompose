@@ -1,6 +1,7 @@
-package com.example.rickandmortycompose.data.repository
+package com.example.rickandmortycompose.data.repository.episode
 
-import android.util.Log
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import com.example.rickandmortycompose.data.model.CharacterResponse
 import com.example.rickandmortycompose.data.model.EpisodeResponse
 import com.example.rickandmortycompose.data.network.api.EpisodeApiService
@@ -9,18 +10,15 @@ class EpisodeRepository(
     private val episodeApiService: EpisodeApiService
 ) {
 
-    suspend fun getAllEpisodes(): List<EpisodeResponse>? {
-        return try {
-            val response = episodeApiService.getAllEpisodes()
-
-            if (response.isSuccessful) {
-                return response.body()?.episodeResponse
-            } else {
-                null
+    fun getAllEpisodes(): Pager<Int,EpisodeResponse> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+            ),
+            pagingSourceFactory = {
+                EpisodePagingSource(episodeApiService)
             }
-        } catch (e: Exception) {
-            null
-        }
+        )
     }
 
     suspend fun getSingleEpisode(id: Int): EpisodeResponse? {
