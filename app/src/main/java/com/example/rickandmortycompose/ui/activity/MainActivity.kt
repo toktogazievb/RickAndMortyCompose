@@ -3,6 +3,16 @@ package com.example.rickandmortycompose.ui.activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.Animation
+import androidx.compose.animation.core.Transition
+import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.slideIn
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,6 +48,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import coil.compose.AsyncImage
 import com.example.rickandmortycompose.R
+import com.example.rickandmortycompose.ui.bottombar.BottomNavItem
 import com.example.rickandmortycompose.ui.screens.character.CharacterScreen
 import com.example.rickandmortycompose.ui.screens.episode.EpisodeScreen
 import com.example.rickandmortycompose.ui.screens.Screens
@@ -77,12 +88,44 @@ class MainActivity : ComponentActivity() {
                     startDestination = Screens.CharacterScreen.route,
                     modifier = Modifier.padding(innerPadding)
                 ) {
-                    composable(Screens.CharacterScreen.route) {
+                    composable(Screens.CharacterScreen.route,
+                        enterTransition = {
+                            slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Up)
+                            slideInHorizontally()
+                        },
+                        exitTransition = {
+                            slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Down)
+                            shrinkHorizontally()
+                        },
+                        popEnterTransition = {
+                            slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Up)
+                            slideInHorizontally()
+                        },
+                        popExitTransition = {
+                            slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Down)
+                            shrinkHorizontally()
+                        }) {
                         CharacterScreen(toDetailCharacterScreen = { characterId ->
                             navController.navigate("DetailCharacterScreen/$characterId")
                         })
                     }
-                    composable(Screens.EpisodeScreen.route) {
+                    composable(Screens.EpisodeScreen.route,
+                        enterTransition = {
+                            slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Up)
+                            slideInHorizontally()
+                        },
+                        exitTransition = {
+                            slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Down)
+                            shrinkHorizontally()
+                        },
+                        popEnterTransition = {
+                            slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Up)
+                            slideInHorizontally()
+                        },
+                        popExitTransition = {
+                            slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Down)
+                            shrinkHorizontally()
+                        }) {
                         EpisodeScreen(toDetailEpisodeScreen = { episodeId ->
                             navController.navigate("DetailEpisodeScreen/$episodeId")
                         })
@@ -91,7 +134,13 @@ class MainActivity : ComponentActivity() {
                         route = Screens.DetailCharacterScreen.route,
                         arguments = listOf(navArgument(name = "characterId") {
                             type = NavType.IntType
-                        })
+                        }),
+                        enterTransition = {
+                            slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Up)
+                        },
+                        exitTransition = {
+                            slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Down)
+                        }
                     ) { backStackEntry ->
                         val characterId = backStackEntry.arguments?.getInt("characterId") ?: 0
                         DetailCharacterScreen(id = characterId)
@@ -100,7 +149,13 @@ class MainActivity : ComponentActivity() {
                         route = Screens.DetailEpisodeScreen.route,
                         arguments = listOf(navArgument(name = "episodeId") {
                             type = NavType.IntType
-                        })
+                        }),
+                        enterTransition = {
+                            slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Up)
+                        },
+                        exitTransition = {
+                            slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Down)
+                        }
                     ) { backStackEntry ->
                         val episodeId = backStackEntry.arguments?.getInt("episodeId") ?: 0
                         DetailEpisodeScreen(
@@ -133,34 +188,31 @@ fun TopBar() {
 
 @Composable
 fun BottomBar(navController: NavController) {
-    val items = listOf(Screens.CharacterScreen, Screens.EpisodeScreen)
+    val items = listOf(BottomNavItem.Characters, BottomNavItem.Episodes)
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
 
     BottomAppBar(
         containerColor = colorResource(R.color.purple_500),
         contentColor = Color.Green
     ) {
-        items.forEach { screen ->
+        items.forEach { item ->
+            val selectedItem = currentRoute == item.route
             NavigationBarItem(
                 icon = {
                     Icon(
-                        painter = painterResource(
-                            id = if (screen == Screens.CharacterScreen) R.drawable.ic_character
-                            else R.drawable.ic_episode
-                        ),
-                        contentDescription = screen.route
+                        painter = painterResource(item.icon),
+                        contentDescription = item.label
                     )
                 },
                 label = {
                     Text(
                         color = Color.White,
-                        text = if (screen == Screens.CharacterScreen) "Characters"
-                        else "Episodes"
+                        text = item.label
                     )
                 },
-                selected = currentRoute == screen.route,
+                selected = selectedItem,
                 onClick = {
-                    navController.navigate(screen.route) {
+                    navController.navigate(item.route) {
                         popUpTo(navController.graph.startDestinationId) {
                             saveState = true
                         }
